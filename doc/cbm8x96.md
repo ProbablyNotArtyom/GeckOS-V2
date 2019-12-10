@@ -4,7 +4,7 @@
 
 * * *
 
-# CBM 8x96
+## CBM 8x96
 
 The Commodore PET 8096 and 8296 (also known as CBM 8096 and CBM 9296)
 computers have at least 96 kByte of RAM and can remap the ROM area with RAM.
@@ -16,9 +16,9 @@ devices at least they provide an 80 columns screen.
 In the CBM 8x96 one can remap the upper 32k of CPU address space by writing
 certain values to $fff0. The blocks `$8000-$bfff` and `$c000-$ffff` can be
 remapped to two different banks of RAM each. The screen memory (`$8000-$9000`)
-and I/O (`$e800-$efff`) can be set to `peek-through' separately. In the OS/A65
+and I/O (`$e800-$efff`) can be set to `peek-through` separately. In the OS/A65
 memory configuration the lower 32k and one bank of the upper 32k of RAM are
-used for the OS image (the `ROM') and the lib6502 managed application memory.
+used for the OS image (the `ROM`) and the lib6502 managed application memory.
 The screen memory and I/O area are not accessible for lib6502 applications.
 The second upper 32k RAM bank is used (with screen and I/O mapped through) as
 system memory area, together with some RAM from `$300-$b00`. Also there are
@@ -28,16 +28,16 @@ they are copied around.
 
     Addr    | RAM 0             | RAM 1
     ========|===================|==================
-    $ffff   | ----------------- | -----------------
-    $fff0   |  config register  |  config register
-    $ff00   | ----------------- | -----------------
+    $ffff   | -------------------------------------
+    $fff0   |            config register
+    $ff00   | -------------------------------------
             |                   |   system memory
     $f000   |                   | -----------------
             |                   |        I/O
     $e800   |                   | -----------------
-            |  lib6502 memory   |  lib6502 memory
-    $b000   |                   | -----------------
-            |                   |  virtual screens
+            |      lib6502      |
+    $b000   |    application    | -----------------
+            |       memory      |  virtual screens
     $9000   |                   | -----------------
             |                   |      screen
     $8000   |                   | -----------------
@@ -45,7 +45,7 @@ they are copied around.
     $6800   | ----------------- |
             | OS/A65 ROM image  |
     $0b00   | ----------------- |
-            |    system RAM     |     no memory!
+            |    System RAM     |     no memory!
     $0200   | ----------------- |
             |       Stack       |
     $0100   | ----------------- |
@@ -58,7 +58,7 @@ they are copied around.
 Building the 8x96 ROM image is simple. Just go to the arch/cbm8x96/boot
 directory and type "make". This should build all files. "make osa.d64" should
 make a d64 VC1541 disk image with all necessary files. You have to have my new
-XA version in the path, though.
+[xa](http://www.tu-chemnitz.de/~fachat/8bit/cross/xa/index.html) version in the path, though.
 
 To customize the ROM, change edit rom.a65 in arch/cbm8x96. You can gain some
 memory when you remove the shell/monitor from the ROM image. (You could
@@ -81,7 +81,7 @@ load device number). This boots OS/A65.
 
 * * *
 
-# Any 80 columns PET with 32k
+## Any 80 columns PET with 32k
 
 Build a version for this computer is a bit more difficult because of the
 restricted memory. I have now tried to build such a version. The device does
@@ -91,7 +91,7 @@ not (yet) check for 40 columns but can now use only 80 cols.
 
 The memory map is straightforward. First zeropage, stack, then system memory
 (all of it), then OS image, then lib6502 memory. At the end ($7800) a second
-virtual screen, and at $8000 the normal screen area. At $90-$93 in the
+virtual screen, and at `$8000` the normal screen area. At `$90-$93` in the
 zeropage the PET ROM IRQ and BRK vectors are located and have to be used.
 
 #### Build 'n Boot

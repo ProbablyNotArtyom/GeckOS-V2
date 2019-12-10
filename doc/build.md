@@ -18,17 +18,17 @@ computer with MMU or the C64 respectively.
 * * *
 
 ### global options, to be set in stdrom/rom.a65 or c64rom/c64rom.a65:
-Option | Description
+Option      | Description
 ----------- | ------
 ROM			| mandatory for a rom build. All local options are ignored.
 ROMSTART 	| Where in CPU memory (with MMU with the upper 4 bits set to zero, i.e. $00000-$0ffff) starts the ROM.
 
 
 ### C64 specific options, to be set in arch/c64//c64rom.a65:
-Option | Description
+Option          | Description
 --------------- | ------
 CLEARMEM 		| if defined, the memory is set to the value CLEARMEM is defined to when booting.
-C64NEEDCIA1 	| if defined, disables reading the CIA1 icr in the kernel. Therefore it has to be assured that a device reads this register to clear the interrupt line again. Undefine this for use with the fast RS232 driver.
+C64NEEDCIA1 	| if defined, disables reading the CIA1 icr in the kernel. Therefore it has to be assured that         a device reads this register to clear the interrupt line again. Undefine this for use with the fast RS232 driver.
 C64_BGND_COL 	|
 C64_TEXT_COL 	|
 C64_BORDER_COL 	| colors to use
@@ -38,7 +38,7 @@ STACKCOPY 		| If defined in non-MMU systems, save stack area somewhere else when
 
 
 ### kernel options in kernel/kernel.a65:
-Option | Description
+Option      | Description
 ----------- | ------
 ROM 		| with ROM all options are set globally or somewhere else
 ROMTEST 	| with ROMTEST the MMU is not loaded, but the contents of the MMU registers secured with GETBLK. Also memory is not tested (to test a new system ROM)
@@ -54,7 +54,7 @@ NMIDEV 		| enables NMI routine (without MMU only)
 
 
 ### shell options in oash/sh.a65:
-Option | Description
+Option      | Description
 ----------- | ------
 SHORTMON 	| no assembler/disassembler in monitor
 NOSYSFKT 	| no file/system calls in monitor
@@ -64,7 +64,7 @@ NOPRG 		| without PRG header
 SHORTLINE 	| use 40 columns instead of 80
 
 ### fsiec options in oafs/fsiec.a65
-Option | Description
+Option      | Description
 ----------- | ------
 INVERT 		| parallel IEEE488 port output lines are inverted
 PARALLEL 	| do it for IEEE488 interface, not serial interface (works for CS/A computer and C64). NOLOOP has then to be defined also.

@@ -542,83 +542,87 @@ On bootup the system is tested and possible errors are detected. On systems
 with a system port, the hardware error is shown by the number of flashes the
 LED makes before the system reboots
 
-    /*        Hardware-Errors          */
+```c++
+/*        Hardware-Errors          */
 
-    #define   HE_ZP     <-1	/* zeropage mem test */
-    #define   HE_RAM    <-2	/* RAM test  (to few RAM) */
-    #define   HE_ROM    <-3	/* Couldn't start a program */
-    #define   HE_DEV    <-4	/* device returns error upon init */
-    #define   HE_TASK   <-5	/* all programs have terminated - reboot */
+#define   HE_ZP     <-1	/* zeropage mem test */
+#define   HE_RAM    <-2	/* RAM test  (to few RAM) */
+#define   HE_ROM    <-3	/* Couldn't start a program */
+#define   HE_DEV    <-4	/* device returns error upon init */
+#define   HE_TASK   <-5	/* all programs have terminated - reboot */
+```
 
 possible error codes are (from oadef/oa1str.def, where most things, except
 filesystem stuff are defined) (These codes must be reordered):
 
-    /*        Software-Errors          */
+```c++
+/*        Software-Errors          */
 
-    #define   E_OK          0       /* no error                             */
-    #define   E_NOTIMP      <-1     /* feature/function not implemented     */
-    #define   E_CONFIG      <-2     /* in this configuration not available  */
-    #define   E_ILLPAR      <-3     /* illegal parameter                    */
-    #define   E_NOMEM       <-4     /* no more memory                       */
+#define   E_OK          0       /* no error                             */
+#define   E_NOTIMP      <-1     /* feature/function not implemented     */
+#define   E_CONFIG      <-2     /* in this configuration not available  */
+#define   E_ILLPAR      <-3     /* illegal parameter                    */
+#define   E_NOMEM       <-4     /* no more memory                       */
 
-    /* stream handling errors */
-    #define   E_NOSTR       <-5     /* no more streams available            */
-    #define   E_SFULL       <-6     /* stream is full                       */
-    #define   E_SEMPTY      <-7     /* stream is empty                      */
-    #define   E_SLWM        <-8     /* stream below low-water-mark (1/4)    */
-    #define   E_SHWM        <-9     /* stream above high-water-mark (3/4)   */
-    #define   E_EOF         <-10    /* last byte read, other side has closed */
-    #define   E_NUL         <-11    /* noone listening on stream            */
+/* stream handling errors */
+#define   E_NOSTR       <-5     /* no more streams available            */
+#define   E_SFULL       <-6     /* stream is full                       */
+#define   E_SEMPTY      <-7     /* stream is empty                      */
+#define   E_SLWM        <-8     /* stream below low-water-mark (1/4)    */
+#define   E_SHWM        <-9     /* stream above high-water-mark (3/4)   */
+#define   E_EOF         <-10    /* last byte read, other side has closed */
+#define   E_NUL         <-11    /* noone listening on stream            */
 
-    /* device handling errors */
-    #define   E_NODEV       <-12    /* illegal device number                */
-    #define   E_DON         <-13    /* device already in use                */
-    #define   E_DOFF        <-14    /* device not in use                    */
-    #define   E_NOTX        <-15    /* device doesn't send                  */
+/* device handling errors */
+#define   E_NODEV       <-12    /* illegal device number                */
+#define   E_DON         <-13    /* device already in use                */
+#define   E_DOFF        <-14    /* device not in use                    */
+#define   E_NOTX        <-15    /* device doesn't send                  */
 
-    /* misc errors */
+/* misc errors */
 
-    #define   E_NOENV       <-16    /* no more free environment/task ID     */
-    #define   E_NOSEM       <-17    /* no more free semaphore               */
-    #define   E_SEMSET      <-18    /* semaphore is already set (with PSEM) */
+#define   E_NOENV       <-16    /* no more free environment/task ID     */
+#define   E_NOSEM       <-17    /* no more free semaphore               */
+#define   E_SEMSET      <-18    /* semaphore is already set (with PSEM) */
 
-    #define   E_NOIRQ       <-19    /* irq routine has not removed irq source */
-    #define   E_VERSION     <-20    /* wrong (executable file) version      */
+#define   E_NOIRQ       <-19    /* irq routine has not removed irq source */
+#define   E_VERSION     <-20    /* wrong (executable file) version      */
 
-    #define   E_NOTASK      <-21    /* no more free task */
-    #define   E_INT         <-22    /* interrupted (by signal) system call */
+#define   E_NOTASK      <-21    /* no more free task */
+#define   E_INT         <-22    /* interrupted (by signal) system call */
 
-    #define   E_ILLSIG      <-23    /* illegal signal number                */
+#define   E_ILLSIG      <-23    /* illegal signal number                */
 
-    #define   E_TRYAGAIN    <-24    /* try again                            */
+#define   E_TRYAGAIN    <-24    /* try again                            */
 
-    /* file handling errors */
+/* file handling errors */
 
-    #define   E_FNODRV      <-32    /* illegal drive number                 */
-    #define   E_FNOPATH     <-33    /* wrong path                           */
-    #define   E_FILLNAM     <-34    /* illegal name (joker "*","?","\"")    */
-    #define   E_FNAMLEN     <-35    /* name too long                        */
-    #define   E_FNOFIL      <-36    /* file not found                       */
-    #define   E_FWPROT      <-37    /* file write protected                 */
-    #define   E_FILEXIST    <-38    /* file exists                          */
-    #define   E_FDISKFULL   <-39    /* disk full                            */
-    #define   E_FDNEMPTY    <-40    /* subdirectory not empty when rmdir    */
-    #define   E_FLOCKED     <-41    /* file locked                          */
-    #define   E_FMEDIA      <-42    /* media error                          */
-    #define   E_FLOGICAL    <-43    /* bad logical structure on media       */
-    #define   E_FINTERNAL   <-44    /* internal error - should not happen!  */
+#define   E_FNODRV      <-32    /* illegal drive number                 */
+#define   E_FNOPATH     <-33    /* wrong path                           */
+#define   E_FILLNAM     <-34    /* illegal name (joker "*","?","\"")    */
+#define   E_FNAMLEN     <-35    /* name too long                        */
+#define   E_FNOFIL      <-36    /* file not found                       */
+#define   E_FWPROT      <-37    /* file write protected                 */
+#define   E_FILEXIST    <-38    /* file exists                          */
+#define   E_FDISKFULL   <-39    /* disk full                            */
+#define   E_FDNEMPTY    <-40    /* subdirectory not empty when rmdir    */
+#define   E_FLOCKED     <-41    /* file locked                          */
+#define   E_FMEDIA      <-42    /* media error                          */
+#define   E_FLOGICAL    <-43    /* bad logical structure on media       */
+#define   E_FINTERNAL   <-44    /* internal error - should not happen!  */
 
-    /* lib6502 errors */
+/* lib6502 errors */
 
-    #define   E_ILLADDR     <-64    /* illegal address for lib6502 mfree    */
-    #define   E_NOFILE      <-65    /* illegal file number for lib6502      */
-    #define   E_NOSEEK      <-66    /* file not seekable                    */
-    #define   E_NOREAD      <-67    /* read on file would block             */
-    #define   E_NOWRITE     <-68    /* write on file would block            */
-    #define   E_FVERSION    <-69    /* file version number not supported    */
+#define   E_ILLADDR     <-64    /* illegal address for lib6502 mfree    */
+#define   E_NOFILE      <-65    /* illegal file number for lib6502      */
+#define   E_NOSEEK      <-66    /* file not seekable                    */
+#define   E_NOREAD      <-67    /* read on file would block             */
+#define   E_NOWRITE     <-68    /* write on file would block            */
+#define   E_FVERSION    <-69    /* file version number not supported    */
 
 
-    #define   E_LASTERR     <-96    /* for customized error numbers         */
+#define   E_LASTERR     <-96    /* for customized error numbers         */
+```
 
 * * *
 
@@ -883,59 +887,64 @@ Terminal devices should understand the following terminal control codes (But
 the currently implemented device driver doesn't understand them all,
 though...)
 
-    /*        Terminal Commands        */
+```c++
+/*        Terminal Commands        */
 
-    #define   TC_BEL    7		bell
-    #define   TC_BS     8		backspace
-    #define   TC_HT     9		horizontal tabulator
-    #define   TC_LF     10		line feed
-    #define   TC_VT     11		vertical tabulator
-    #define   TC_FF     12		form feed
-    #define   TC_CR     13		carriage return
-    #define   TC_ESC    27		Escape code
+#define   TC_BEL    7		// bell
+#define   TC_BS     8		// backspace
+#define   TC_HT     9	    // horizontal tabulator
+#define   TC_LF     10		// line feed
+#define   TC_VT     11		// vertical tabulator
+#define   TC_FF     12		// form feed
+#define   TC_CR     13		// carriage return
+#define   TC_ESC    27		// Escape code
 
-    #define   TC_CLFT   $80		cursor left
-    #define   TC_CRGT   $81		cursor right
-    #define   TC_CUP    $82		cursor up
-    #define   TC_CDWN   $83		cursor down
-    #define   TC_HOME   $84		cursor to the upper left edge
-    #define   TC_CLR    $85		clear screen
-    #define   TC_DEL    $86		delete char
-    #define   TC_INS    $87		insert
-    #define   TC_WLO    $88    	set upper left window corner by cursor pos
-    #define   TC_WRU    $89  	set lower right window corner by cursor pos
-    #define   TC_WCLS   $8a		clear window
-    #define   TC_EOL    $8b		put cursor to the end of line
-    #define   TC_CLL    $8c		clear rest of line from cursor
+#define   TC_CLFT   $80		// cursor left
+#define   TC_CRGT   $81		// cursor right
+#define   TC_CUP    $82		// cursor up
+#define   TC_CDWN   $83		// cursor down
+#define   TC_HOME   $84		// cursor to the upper left edge
+#define   TC_CLR    $85		// clear screen
+#define   TC_DEL    $86		// delete char
+#define   TC_INS    $87		// insert
+#define   TC_WLO    $88    	// set upper left window corner by cursor pos
+#define   TC_WRU    $89  	// set lower right window corner by cursor pos
+#define   TC_WCLS   $8a		// clear window
+#define   TC_EOL    $8b		// put cursor to the end of line
+#define   TC_CLL    $8c		// clear rest of line from cursor
 
-    #define   TC_ECHO   $8d		switch on local (device) echo mode
-    #define   TC_NOECHO $8e		device only sends, application has to echo
+#define   TC_ECHO   $8d		// switch on local (device) echo mode
+#define   TC_NOECHO $8e		// device only sends, application has to echo
 
-    #define   TC_CPOS   $8f         next two chars are row and column of new
-                                    cursor position
-
+#define   TC_CPOS   $8f     // next two chars are row and column of new cursor position
+```
 
 FORK, SETIRQ and TRESET can **NO MORE** be called via a SEND system call, when
 the receiver address is SEND_SYS and the message type is SP_* !!
 
-    /*        SysProcCalls             */
+```c++
+/*        SysProcCalls             */
 
-    #define   PCBUF     $200
+#define   PCBUF     $200
+```
 
-
-STD* stream number are replaced by the numbers saved in the environment
+`STD*` stream number are replaced by the numbers saved in the environment
 struct.
 
-    /*        StdStream                */
+```c++
+/*        StdStream                */
 
-    #define   STDNUL         $fc       /* will be ignored (for FS STDIO)*/
-    #define   STDIN          $fd
-    #define   STDOUT         $fe
-    #define   STDERR         $ff
+#define   STDNUL         $fc       /* will be ignored (for FS STDIO)*/
+#define   STDIN          $fd
+#define   STDOUT         $fe
+#define   STDERR         $ff
+```
 
 Reserved system environment numbers:
 
-    #define   SEND_FM        $fe		/* filesystem manager */
-    #define	  SEND_ERROR	 $fd		/* critical error handler */
-    #define   SEND_TIME      $fc		/* set/get actual time */
-    #define   SEND_NET       $fb            /* open network connections */
+```c++
+#define   SEND_FM        $fe		/* filesystem manager */
+#define   SEND_ERROR	 $fd		/* critical error handler */
+#define   SEND_TIME      $fc		/* set/get actual time */
+#define   SEND_NET       $fb        /* open network connections */
+```

@@ -5,7 +5,7 @@
 
 ## Currently implemented device drivers
 
-#### Video Device
+#### `video` Device
 
 The video device incorporates not only one but four devices, video1-video4
 (with 2MHz, only 2 devices are working). As hardware it needs the video card
@@ -24,24 +24,24 @@ the two modes.
   indirect mode   |  keyboard events are printed on the screen only, not sent to the stream. If a Return occurs, the actual line is sent to the stream. This is default.
   direct mode     |  all keyboard events are directly passed to the stream. Supported terminal control codes are Bell, Backspace, Carriage Return, Line Feed and Form Feed.
 
-#### par Device
+#### `par` Device
 
 This device handles the (simple) centronics port on the shugart bus board.
 
-#### nuldev Device
+#### `nuldev` Device
 
 This device reads a given stream until end, i.e. EOF and then closes the
 stream. Like /dev/null for writing. You cannot read from it. Only a certain
 number of streams can be handled before an error is returned on open.
 
-#### spooler Device
+#### `spooler` Device
 
 This is a kind of serializer. You can copy one file after the other to this
 device, even if the first files are not yet through. When copying the output
 of the spooler to another file, e.g. the spooler device, they appear in the
 same order as copied into and intact, i.e. the files are not mixed.
 
-#### ser Device
+#### `ser` Device
 
 Ser stands for serial device and that's what it's doing. It handles the two
 serial device ACIAs on the BIOS and on the keyboard board of the CS/A65
@@ -52,23 +52,23 @@ set low. After the stream going below the low water mark (1/4 fifo size), /CTS
 is set high again.
 With DC_SPEED, the baud rate of the device can be set:
 
-	parameter (y) |  speed (baud)
-	==============|==============
-	 1            |  50
-	 2            |  75
-	 3            |  109.92
-	 4            |  134.58
-	 5            |  150
-	 6            |  300
-	 7            |  600
-	 8            |  1200
-	 9            |  1800
-	 10           |  2400
-	 11           |  3600
-	 12           |  4800
-	 13           |  7200
-	 14           |  9600
-	 15           |  19200
+parameter (y) |  speed (baud)
+--------------|--------------
+ 1            |  50
+ 2            |  75
+ 3            |  109.92
+ 4            |  134.58
+ 5            |  150
+ 6            |  300
+ 7            |  600
+ 8            |  1200
+ 9            |  1800
+ 10           |  2400
+ 11           |  3600
+ 12           |  4800
+ 13           |  7200
+ 14           |  9600
+ 15           |  19200
 
 With version 1.3.10 we now also have driver for an UART 16550A, with 16 byte
 builtin FIFO (oa1ds3.a65). There also is a RS232 driver for the fast RS232

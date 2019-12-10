@@ -14,7 +14,7 @@ embedded applications.
 This way the more interesting features are still available, like
 multithreading, signals and the device code. Some of the more sophisticated
 kernel features can be removed however. For how to do this see the
-[config](kernel.html#config) section of the kernel description. The
+[config](kernel.md#configuration-when-building) section of the kernel description. The
 application can be tested on a full-featured system while the embedded kernel
 provides compatibility where necessary.
 
@@ -31,5 +31,4 @@ environment, task and thread-save 6 bytes from addresses 2-8), also not
 counting the possible use of PCBUF by fork and devcmd. 1k RAM total should now
 be sufficient for simple applications.
 
-Using the PCBUF without locking with a semaphore should be handled with care,
-however.
+**Using the PCBUF without locking with a semaphore should be handled with care**, however.

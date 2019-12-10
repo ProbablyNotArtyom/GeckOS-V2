@@ -1,5 +1,4 @@
 # OS/A65 Operating System
-
 #### Version 2.0.1
 #### (c) 1989-1998 Andre Fachat [[Homepage]](http://www.tu-chemnitz.de/~fachat/index.html)
 
