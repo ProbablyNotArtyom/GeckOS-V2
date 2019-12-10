@@ -1,12 +1,10 @@
 #  OS/A65 CBM PET Notes
-
-##  (c) 1998 Andre Fachat
+#### OS/A65 CBM PET Version 2.0
+#### (c) 1998 Andre Fachat
 
 * * *
 
-## OS/A65 CBM PET Version 2.0
-
-### CBM 8x96
+# CBM 8x96
 
 The Commodore PET 8096 and 8296 (also known as CBM 8096 and CBM 9296)
 computers have at least 96 kByte of RAM and can remap the ROM area with RAM.
@@ -27,40 +25,33 @@ system memory area, together with some RAM from `$300-$b00`. Also there are
 the mirrors of the other virtual console screen areas - when switching screens
 they are copied around.
 
-    
-    
-    Addr     RAM 0        RAM 1
-    $ffff  ----------------------
-    $fff0	configuration register
-    $ff00   -------      -------
-                         system
-               |         memory
-    $f000                -------
-               |         I/O
-    $e800                -------
-            lib6502
-            application
-            memory
-    $b000                -------
-               |         virtual 
-                         screens
-    $9000      |         -------
-                         screen
-    $8000      |         -------
-    
-    $6800   -------
-            OS/A65          |
-            `ROM'
-            image           |
-    $0b00   ------
-            system        no 
-            RAM           memory!
-    $0200   ------
-            Stack           |
-    $0100   ------
-            Zerop.
-    $0000  ----------------------
-    
+
+    Addr    | RAM 0             | RAM 1
+    ========|===================|==================
+    $ffff   | ----------------- | -----------------
+    $fff0   |  config register  |  config register
+    $ff00   | ----------------- | -----------------
+            |                   |   system memory
+    $f000   |                   | -----------------
+            |                   |        I/O
+    $e800   |                   | -----------------
+            |  lib6502 memory   |  lib6502 memory
+    $b000   |                   | -----------------
+            |                   |  virtual screens
+    $9000   |                   | -----------------
+            |                   |      screen
+    $8000   |                   | -----------------
+            |                   |
+    $6800   | ----------------- |
+            | OS/A65 ROM image  |
+    $0b00   | ----------------- |
+            |    system RAM     |     no memory!
+    $0200   | ----------------- |
+            |       Stack       |
+    $0100   | ----------------- |
+            |     Zeropage      |
+    $0000   | ----------------- | -----------------
+
 
 #### ROM image build
 
@@ -88,7 +79,9 @@ Put the files "loader", "lsh" and "rom" on a disk accessible by the PET 8x96.
 load "loader" into BASIC memory and start it (probably edit it for the right
 load device number). This boots OS/A65.
 
-### Any 80 columns PET with 32k
+* * *
+
+# Any 80 columns PET with 32k
 
 Build a version for this computer is a bit more difficult because of the
 restricted memory. I have now tried to build such a version. The device does
@@ -104,4 +97,3 @@ zeropage the PET ROM IRQ and BRK vectors are located and have to be used.
 #### Build 'n Boot
 
 Basically the same applies as for the 8x96.
-

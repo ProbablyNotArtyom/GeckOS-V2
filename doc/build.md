@@ -1,8 +1,9 @@
 #  OS/A65 Building Procedure
-
-####  (c) 1989-98 Andre Fachat
+#### (c) 1989-98 Andre Fachat
 
 * * *
+
+### Build configuration options
 
 Building the object files for use on an OS/A65 machine should really be only a
 'make', as long as my cross assembler [xa](http://www.tu-chemnitz.de/~fachat/8bit/cross/index.html) is in the path. If there weren't
@@ -16,66 +17,59 @@ computer with MMU or the C64 respectively.
 
 * * *
 
-#### global options, to be set in stdrom/rom.a65 or c64rom/c64rom.a65:
+### global options, to be set in stdrom/rom.a65 or c64rom/c64rom.a65:
 Option | Description
------- | ------
-ROM	| mandatory for a rom build. All local options are ignored.
-ROMSTART | Where in CPU memory (with MMU with the upper 4 bits set to zero, i.e. $00000-$0ffff) starts the ROM.
+----------- | ------
+ROM			| mandatory for a rom build. All local options are ignored.
+ROMSTART 	| Where in CPU memory (with MMU with the upper 4 bits set to zero, i.e. $00000-$0ffff) starts the ROM.
 
-* * *
 
-#### C64 specific options, to be set in arch/c64//c64rom.a65:
+### C64 specific options, to be set in arch/c64//c64rom.a65:
 Option | Description
------- | ------
-CLEARMEM | if defined, the memory is set to the value CLEARMEM is defined to when booting.
-C64NEEDCIA1 | if defined, disables reading the CIA1 icr in the kernel. Therefore it has to be assured that a device reads this register to clear the interrupt line again. Undefine this for use with the fast RS232 driver.
-C64_BGND_COL |
-C64_TEXT_COL |
-C64_BORDER_COL | colors to use
-C64SWITCH | The terminal switch key, 61= C= key, 4= F1
-C64NMIRESET | makes the Restore key a RESET key. Doesn't work with fast serial driver!
-STACKCOPY | If defined in non-MMU systems, save stack area somewhere else when doing a task switch. If a task switch is done, the stack is copied back. If not defined, divide the 6502 stack from $100 to $1ff into pieces, one for each task and one for the system. It's faster without, but with this option there is much more stack space per task and more tasks are available.
+--------------- | ------
+CLEARMEM 		| if defined, the memory is set to the value CLEARMEM is defined to when booting.
+C64NEEDCIA1 	| if defined, disables reading the CIA1 icr in the kernel. Therefore it has to be assured that a device reads this register to clear the interrupt line again. Undefine this for use with the fast RS232 driver.
+C64_BGND_COL 	|
+C64_TEXT_COL 	|
+C64_BORDER_COL 	| colors to use
+C64SWITCH 		| The terminal switch key, 61= C= key, 4= F1
+C64NMIRESET 	| makes the Restore key a RESET key. Doesn't work with fast serial driver!
+STACKCOPY 		| If defined in non-MMU systems, save stack area somewhere else when doing a task switch. If a task switch is done, the stack is copied back. If not defined, divide the 6502 stack from $100 to $1ff into pieces, one for each task and one for the system. It's faster without, but with this option there is much more stack space per task and more tasks are available.
 
-* * *
 
-#### kernel options in kernel/kernel.a65:
+### kernel options in kernel/kernel.a65:
 Option | Description
------- | ------
-ROM | with ROM all options are set globally or somewhere else
-ROMTEST | with ROMTEST the MMU is not loaded, but the contents of the MMU registers secured with GETBLK. Also memory is not tested (to test a new system ROM)
-CMOSCPU | for (Rockwell) CMOS CPU
-NOMMU | system for a computer without MMU
-NOSYSPORT | system has no SYSPORT (at $efe0)
-NOSINPORT | system has no SYSPORT, but LED is driven, if a board is plugged in
-NOENVIRQ | to build system where tasks cannot have an own irq routine
-BATMEM | main memory is not erased at memory test (for battery buffered RAM)
-NOMIRRORMEM | if the memory chip is definitely not mirrored (i.e. no unconnected CPU address lines), one can disable the test for this.
-CLK2MHZ | if NOSYSPORT or NOSINPORT, the CPU clock has to be set here
-NMIDEV | enables NMI routine (without MMU only)
+----------- | ------
+ROM 		| with ROM all options are set globally or somewhere else
+ROMTEST 	| with ROMTEST the MMU is not loaded, but the contents of the MMU registers secured with GETBLK. Also memory is not tested (to test a new system ROM)
+CMOSCPU 	| for (Rockwell) CMOS CPU
+NOMMU 		| system for a computer without MMU
+NOSYSPORT 	| system has no SYSPORT (at $efe0)
+NOSINPORT 	| system has no SYSPORT, but LED is driven, if a board is plugged in
+NOENVIRQ 	| to build system where tasks cannot have an own irq routine
+BATMEM 		| main memory is not erased at memory test (for battery buffered RAM)
+NOMIRRORMEM	| if the memory chip is definitely not mirrored (i.e. no unconnected CPU address lines), one can disable the test for this.
+CLK2MHZ 	| if NOSYSPORT or NOSINPORT, the CPU clock has to be set here
+NMIDEV 		| enables NMI routine (without MMU only)
 
-* * *
 
-#### shell options in oash/sh.a65:
+### shell options in oash/sh.a65:
 Option | Description
------- | ------
-SHORTMON | no assembler/disassembler in monitor
-NOSYSFKT | no file/system calls in monitor
-NOMON | no monitor
-NOSH | no shell
-NOPRG | without PRG header
-SHORTLINE | use 40 columns instead of 80
+----------- | ------
+SHORTMON 	| no assembler/disassembler in monitor
+NOSYSFKT 	| no file/system calls in monitor
+NOMON 		| no monitor
+NOSH 		| no shell
+NOPRG 		| without PRG header
+SHORTLINE 	| use 40 columns instead of 80
 
-* * *
-
-#### fsiec options in oafs/fsiec.a65
+### fsiec options in oafs/fsiec.a65
 Option | Description
------- | ------
-INVERT		parallel IEEE488 port output lines are inverted
-PARALLEL	do it for IEEE488 interface, not serial interface
-		(works for CS/A computer and C64). NOLOOP has then
-		to be defined also.
-NOCMD		do not interpret other fs commands than FS_OPEN_*
-NOFS		do not register as fs - listen on bus only
-NOLOOP		do not listen on bus - register as fs only
-STDTST		include STDIO lib if needed.
-NOPRG		without PRG header
+----------- | ------
+INVERT 		| parallel IEEE488 port output lines are inverted
+PARALLEL 	| do it for IEEE488 interface, not serial interface (works for CS/A computer and C64). NOLOOP has then to be defined also.
+NOCMD 		| do not interpret other fs commands than FS_OPEN_*
+NOFS 		| do not register as fs - listen on bus only
+NOLOOP 		| do not listen on bus - register as fs only
+STDTST 		| include STDIO lib if needed.
+NOPRG 		| without PRG header

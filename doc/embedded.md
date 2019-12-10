@@ -1,12 +1,10 @@
 #  OS/A65 Embedded Application Notes
-
-##  (c) 1989-98 Andre Fachat
+#### OS/A65 Embedded Version 2.0
+#### (c) 1989-98 Andre Fachat
 
 * * *
 
-### OS/A65 Embedded Version 2.0
-
-#### Introduction
+## Introduction
 
 Embedded applications normally don't have the amount of RAM and ROM that a
 "normal" (whatever this means) system has. Therefore I have tried to make some
@@ -20,13 +18,12 @@ kernel features can be removed however. For how to do this see the
 application can be tested on a full-featured system while the embedded kernel
 provides compatibility where necessary.
 
-Parts of the kernel that can be removed are
-
-  * streams 
-  * memory management 
-  * file manager 
-  * send/receive 
-  * semaphores 
+Parts of the kernel that can be removed are:
+ > streams
+ > memory management
+ > file manager
+ > send/receive
+ > semaphores
 
 This shortens the kernel to almost 2k in size. Also the used amount of RAM is
 $bc = 188 byte normal RAM, plus $e = 14 byte zeropage (not counting the
@@ -36,4 +33,3 @@ be sufficient for simple applications.
 
 Using the PCBUF without locking with a semaphore should be handled with care,
 however.
-

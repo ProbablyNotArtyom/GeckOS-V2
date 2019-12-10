@@ -1,18 +1,16 @@
 #  OS/A65 Device Drivers
-
-##  (c) 1989-96 Andre Fachat
+#### (c) 1989-96 Andre Fachat
 
 * * *
 
-This file gives a description of the so far implemented device drivers for
-OS/A65.
+## Currently implemented device drivers
 
-#### video Device
+#### Video Device
 
 The video device incorporates not only one but four devices, video1-video4
 (with 2MHz, only 2 devices are working). As hardware it needs the video card
 and the keyboard card with a CBM 3032 keyboard attached to it. If available,
-the piezo beeper on the IEEE488 card is used to generate bell signals.  
+the piezo beeper on the IEEE488 card is used to generate bell signals.
 The video card has one video port only, so the video is shared between the
 four possible video devices. The "@" key is used to switch between the
 different terminals. As there is no way to send some kind of ioctl message
@@ -21,10 +19,10 @@ CBM 3032 keyboard), the key closes the stream from the sender side, thus
 signaling an EOF. With control and shift, the the device is switched between
 the two modes.
 
-  1. **indirect mode** : keyboard events are printed on the screen only, not sent to the stream. If a Return occurs, the actual line is sent to the stream. This is default. 
-  2. **direct mode** : all keyboard events are directly passed to the stream. 
-Supported terminal control codes are Bell, Backspace, Carriage Return, Line
-Feed and Form Feed.
+ Mode             |  Description
+------------------|-----------------
+**indirect mode** |  keyboard events are printed on the screen only, not sent to the stream. If a Return occurs, the actual line is sent to the stream. This is default.
+**direct mode**   |  all keyboard events are directly passed to the stream. Supported terminal control codes are Bell, Backspace, Carriage Return, Line Feed and Form Feed.
 
 #### par Device
 
@@ -51,32 +49,28 @@ computer. There are some watch outs, though. From the serial device, only
 RTS/CTS are handled. A low on an incoming /RTS stops sending. If the stream to
 write the data to is above the high water mark (3/4 fifo size), then /CTS is
 set low. After the stream going below the low water mark (1/4 fifo size), /CTS
-is set high again.  
+is set high again.
 With DC_SPEED, the baud rate of the device can be set:
 
-    
-    
-    parameter (y)      speed (baud)
-    -------------------------------
-     1                   50
-     2                   75
-     3                  109.92
-     4                  134.58
-     5                  150
-     6                  300
-     7                  600
-     8                 1200
-     9                 1800
-     10                2400
-     11                3600
-     12                4800
-     13                7200
-     14                9600
-     15               19200
-    
+	parameter (y) |  speed (baud)
+	==============|==============
+	 1            |  50
+	 2            |  75
+	 3            |  109.92
+	 4            |  134.58
+	 5            |  150
+	 6            |  300
+	 7            |  600
+	 8            |  1200
+	 9            |  1800
+	 10           |  2400
+	 11           |  3600
+	 12           |  4800
+	 13           |  7200
+	 14           |  9600
+	 15           |  19200
 
 With version 1.3.10 we now also have driver for an UART 16550A, with 16 byte
 builtin FIFO (oa1ds3.a65). There also is a RS232 driver for the fast RS232
 interface for the C64 by Daniel Dallmann, as described on his homepage or in
 the comp.sys.cbm FAQ.
-
