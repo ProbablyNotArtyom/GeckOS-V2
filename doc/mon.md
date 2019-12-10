@@ -11,8 +11,6 @@ All addresses and data bytes can be given in hex, decimal (with preceding
 of the commands M, B, R, D, G and C can be piped to a file with `> filename`,
 like in the shell.
 
-
-
     X		exits monitor (goes to shell)
     D a b		disassemble from address a to b
     B a b		binary list

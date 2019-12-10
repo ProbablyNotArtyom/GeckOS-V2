@@ -1,6 +1,5 @@
 #  OS/A65 Shell Commands
-
-##  (c) 1989-98 Andre Fachat
+####  (c) 1989-98 Andre Fachat
 
 * * *
 
@@ -16,48 +15,47 @@ STDIN of the second command.
 
 Shell commands:
 
-    
-    
-    x:			sets drive to 'x:'
-    DIR d:name?.*		shows directory
-    TYPE filename		print file on STDOUT
-    DEL filename		delete file
-    FORMAT/x d:name		format disk in drive d:, format x (which is a 
-    			number, see fsibm), and gives it a the name 
-    			'name'.
-    CHKDSK d:		check disk
-    RENAME name1 name2	renames 'name1' to 'name2'
-    B filename
-    BATCH filename		Switches STDIN to filename, until an EOF is 
-    			read, then returns to normal STDIN
-    MONITOR			switch to machine language monitor
-    LOGOFF			exit shell
-    COPYCON filename	writes the terminal input to a file, until
-    			a line with a "@" is read.
-    DUP >file1 <file2 !file3
-    			redirects STDOUT to file1, STDIN to file2, and
-    			STDERR to file3. STDOUT and STDERR can be redirected
-    			to the same file with ">!".
-    CHDIR newdir
-    CD newdir		change to a new directory
-    DEVCMD dev cmd par	calls the DEVCMD kernel call. The device is given
-    			as name, cmd as one of IRQ, RES, GETSTR, PUTSTR,
-    			RXON, RXOFF, TXON, TXOFF, SPEED, HANDSHAKE, STATUS
-    			and EXIT.
-    COPY file1 file2	copy file1 to file2 in background
-    			(for multiple files better use mcopy, as 
-    			copying in the background eats up system resources
-    			if too many files are copied)
-    GETSTR			get a free stream
-    FRESTR x		release the stream
-    SETMEM x		set memory size of task to x times 4kByte
-    INFO			prints the information given by GETINFO kernel
-    			call bug: currently only ten tasks are printed 
-    			due to earlier revision restrictions.
-    KILL x			kill task x
-    MKDIR dirname		make a new directory
-    RMDIR dirname		remove a directory
-    ROM filename            reads memory mapping information (like the OS/A65
-                            ROM boot entry) and starts the file from ROM.
-    
-
+	Command & Syntax          | Description & Function
+	--------------------------|---------------------------------------------------
+	x:                        |  sets drive to 'x:'
+    DIR d:name?.*             |  shows directory
+    TYPE filename             |  print file on STDOUT
+    DEL filename              |  delete file
+    FORMAT/x d:name           |  format disk in drive d:, format x (which is a
+                              |  number, see fsibm), and gives it a the name
+                              |  'name'.
+    CHKDSK d:                 |  check disk
+    RENAME name1 name2        |  renames 'name1' to 'name2'
+    B filename                |  Switches STDIN to filename, until an EOF is
+    BATCH filename            |
+	                          |
+                              |  read, then returns to normal STDIN
+    MONITOR                   |  switch to machine language monitor
+    LOGOFF                    |  exit shell
+    COPYCON filename          |  writes the terminal input to a file, until
+                              |  a line with a "@" is read.
+    DUP >file1 <file2 !file3  |  redirects STDOUT to file1, STDIN to file2, and
+                              |  STDERR to file3. STDOUT and STDERR can be redirected
+                              |  to the same file with ">!".
+    CHDIR newdir              |  change to a new directory
+    CD newdir                 |
+	                          |
+    DEVCMD dev cmd par        |  calls the DEVCMD kernel call. The device is given
+                              |  as name, cmd as one of IRQ, RES, GETSTR, PUTSTR,
+                              |  RXON, RXOFF, TXON, TXOFF, SPEED, HANDSHAKE, STATUS
+                              |  and EXIT.
+    COPY file1 file2          |  copy file1 to file2 in background
+                              |  (for multiple files better use mcopy, as
+                              |  copying in the background eats up system resources
+                              |  if too many files are copied)
+    GETSTR                    |  get a free stream
+    FRESTR x                  |  release the stream
+    SETMEM x                  |  set memory size of task to x times 4kByte
+    INFO                      |  prints the information given by GETINFO kernel
+                              |  call bug: currently only ten tasks are printed
+                              |  due to earlier revision restrictions.
+    KILL x                    |  kill task x
+    MKDIR dirname             |  make a new directory
+    RMDIR dirname             |  remove a directory
+    ROM filename              |  reads memory mapping information (like the OS/A65
+                              |  ROM boot entry) and starts the file from ROM.

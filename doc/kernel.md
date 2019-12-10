@@ -34,13 +34,13 @@ some stuff not necessary for the particular application.
 
 ### Contents
 
-  * Kernal Interface Description
-  * Error Codes
-  * ROM bootup
-  * Variable Allocation
-  * Configuration during build
-  * Porting Information
-  * System Constants
+  * [Kernal Interface Description](#kernel-interface-description)
+  * [Error Codes](#error-codes)
+  * [ROM bootup](#rom-bootup)
+  * [Variable Allocation](#variable-allocation)
+  * [Configuration during build](#configuration-when-building)
+  * [Porting Information](#porting)
+  * [System Constants](#system-constants)
 
 ### Kernel Interface Description
 
