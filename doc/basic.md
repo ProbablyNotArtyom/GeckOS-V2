@@ -1,10 +1,9 @@
-## Warning!
+### Warning!
 
 **The BASIC interpreter is derived from copyrighted code! So the basic
 interpreter is only an educational example of how to port other programs from
 the C64 or other PET computers to the OS/A65 operating system.
-
-Do not try to assemble it or run it! **
+Do not try to assemble it or run it!**
 
 * * *
 
@@ -15,19 +14,19 @@ added.
 
 #### changed commands
 
-  * OPEN fnr, drv, mode, name   
+  * OPEN fnr, drv, mode, name
 'drv' has changed from the commodore specific device id to the OS/A drive
 number. 'mode' then is the command to open a file, i.e. FS_xxx.
 
-  * LOAD name, drv 
-  * SAVE name, drv   
+  * LOAD name, drv
+  * SAVE name, drv
 'drv' has changed to the OS/A drive number
 
-  * LIST name, drv [,a-b]  
+  * LIST name, drv [,a-b]
 You can now list a program directly to a file. a and b are filenumbers and
 optional (as usual with list)
 
-  * SYS adr  
+  * SYS adr
 'adr' is checked for some C64 specific addresses and changes them to the
 routines where they are now. Detected addresses are $ff90, $ff99, $ff9c,
 $ffb7-$ffe7, $fff0, $fff3.
@@ -37,60 +36,59 @@ $ffb7-$ffe7, $fff0, $fff3.
 Some parameter can be left off, I was just to lazy to write all the
 brackets...
 
-  * DIR [mask,] drv  
+  * DIR [mask,] drv
 print directory of a drive
 
-  * MKDIR name, drv  
+  * MKDIR name, drv
 creates new subdirectory
 
-  * RMDIR name, drv  
+  * RMDIR name, drv
 remove (empty) subdirectory
 
-  * SCRATCH name, drv  
+  * SCRATCH name, drv
 remove file
 
-  * RENAME name1 TO name2, drv   
+  * RENAME name1 TO name2, drv
 rename a file 'name1' to 'name2'.
 
-  * DELETE a-b   
+  * DELETE a-b
 remove BASIC lines a-b; syntax is the same as with list
 
-  * RENUMBER start, step, a-b  
+  * RENUMBER start, step, a-b
 change basic line numbers of the lines a-b (syntax as with list) to start,
 start+step, start+2*step,... All GOSUB and GOTO statements are changed
 appropriately in the whole program.
 
-  * RENEW  
+  * RENEW
 Gets a BASIC program back that has been deleted with NEW. It only works if the
 program has not been overwritten by e.g. setting a new variable in memory.
 
-  * DUMP  
+  * DUMP
 prints all variables
 
-  * FIND text  
+  * FIND text
 list the lines where 'text' occurs.
 
-  * HIMEM adr  
+  * HIMEM adr
 sets a new end of basic ram address and executes a CLR.
 
-  * LOMEM adr  
+  * LOMEM adr
 sets a new basic program start address and executes a NEW.
 
-  * QUIT  
+  * QUIT
 In contrast to the original C64 Basic interpreter this one can be left...
 
-  * ENTER name, drv  
+  * ENTER name, drv
 redirects STDIN to the given file, so that e.g. a complete basic program can
 be read in from an ASCII (not tokenized) file.
 
-  * CALL adr, a, x, y, c, ra, rx, ry, rc  
+  * CALL adr, a, x, y, c, ra, rx, ry, rc
 Calls a machine language routine at adr, with a,x,y,c in accumulator, x- and
 y-register and in the status register. Return values are put into ra, rx, ry,
 rc.
 
-  * SPUT adr, string  
+  * SPUT adr, string
 Write a string directly into memory at adr, end with nullbyte.
 
-  * SGET adr, len, stringvar  
+  * SGET adr, len, stringvar
 reads len bytes from memory at adr and saves it in string variable.
-

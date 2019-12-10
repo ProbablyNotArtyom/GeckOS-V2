@@ -1,8 +1,7 @@
 # OS/A65 Operating System
 
-## Version 2.0.1
-
-## (c) 1989-1998 Andre Fachat [[Homepage]](http://www.tu-chemnitz.de/~fachat/index.html)
+#### Version 2.0.1
+#### (c) 1989-1998 Andre Fachat [[Homepage]](http://www.tu-chemnitz.de/~fachat/index.html)
 
 * * *
 
@@ -149,9 +148,3 @@ But after all, I don't really have time for it.
   * native C128 port
 
   * in this process abstract a kind of block device from fsibm and use it for the VC1571 as well
-
-* * *
-
-Last modified 14 march 1997 by A. Fachat
-This Page has been read approx. ![\[Can't display counter!\]](/cgi-
-bin/counter/~fachat/8bit/osa/v2.0/index.html) times since march 14, 1996.
