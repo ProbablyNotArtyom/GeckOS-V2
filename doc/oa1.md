@@ -1,55 +1,54 @@
 #  OS/A65 Multitasking OS for 6502
-
-##  (c) 1989-96 Andre Fachat
+####  (c) 1989-96 Andre Fachat
 
 * * *
 
-###
-
-This is the description of a small operating system for the 6502 CPU. It is a
+**This is the description of a small operating system for the 6502 CPU. It is a
 microkernel design, with preemtive multitasking, without memory protection and
 swapping though. With a page mapped MMU the different tasks are paged out and
 memory up to 1 MByte is supported. Available software includes a shell with
 piping and I/O redirection, filesystems for (Commodore serial and parallel)
 IEEE488 interface, as well as for PC-style disks. Devices can be handled as
 files as well. A BASIC interpreter has been ported from the C64. A version for
-the C64 is available with version 1.3.5.
+the C64 is available with version 1.3.5.**
 
-A description of the kernel interna, the kernel interface and the standard
+* * *
+
+A description of the kernel internals, the kernel interface and the standard
 library is given. Some of the devices and filesystems are introduced.
 
-  * Overview
-  * Kernel
-    * Entry/Exit Gates
-    * Task Handling
-    * Memory Management
-    * Device Management
-    * Stream Management
-    * Messages
-    * Semaphores
-    * Signals
-    * File System Manager
-  * Standard Library
-  * Available Filesystems
-    * Device filesystem 'fsdev'
-    * IEEE 488 filesystem 'fsiec'
-    * FAT filesystem 'fsibm'
-  * Available Software
-    * The Shell 'sh'
-    * The Monitor 'mon'
-    * BASIC interpreter
-  * CS/A65 Hardware
-    * CPU
-    * Bus System
-    * I/O Addressing
-    * MMU Subsystem
-    * Some Interfaces
-  * Porting to other platforms
-    * CS/A65 without MMU Subsystem
-    * C64 port
-    * Ideas for a C128 port
-  * Next Version?
-  * Known bugs and possible improvements
+  * [Overview](#overview)
+  * [Kernel](#kernel)
+    * [Entry/Exit Gates](#kernel-entry/exit)
+    * [Task Handling](#task-handling)
+    * [Memory Management](#memory-management)
+    * [Device Management](#device-management)
+    * [Stream Management](#stream-management)
+    * [Messages](#messages)
+    * [Semaphores](#semaphores)
+    * [Signals](#signals)
+    * [File System Manager](#filesystem-manager)
+  * [Standard Library](#standard-library)
+  * [Available Filesystems](#available-filesystems)
+    * [Device filesystem 'fsdev'](#device-filesystem-'fsdev')
+    * [IEEE 488 filesystem 'fsiec'](#ieee-488-filesystem-'fsiec')
+    * [FAT filesystem 'fsibm'](#fat-filesystem-'fsibm')
+  * [Available Software](#available-software)
+    * [The Shell 'sh'](#the-shell-'sh')
+    * [The Monitor 'mon'](#the-monitor-'mon')
+    * [BASIC interpreter](#basic-interpreter)
+  * [CS/A65 Hardware](#cs/a65-hardware)
+    * [CPU](#cpu)
+    * [Bus System](#bus-system)
+    * [I/O Addressing](#i/o-system)
+    * [MMU Subsystem](#mmu-subsystem)
+    * [Some Interfaces](#i/o-boards)
+  * [Porting to other platforms](#porting-to-other-platforms)
+    * [CS/A65 without MMU Subsystem](#nommu-port)
+    * [C64 port](#c64-port)
+    * [Ideas for a C128 port](#what-about-a-c128-port?)
+  * [Next Version?](#what-about-the-next-version?)
+  * [Known bugs and possible improvements](#are-there-known-bugs?)
 
 ## Overview
 
@@ -281,8 +280,7 @@ floppy drives) wouldn't even support it.
 
 ## Standard Library
 
-_The standard library of OS/A65 v1 has been replaced by
-the[lib6502](lib6502.md)._
+_The standard library of OS/A65 v1 has been replaced by [lib6502](lib6502.md)._
 
 The so called standard library is a set of subroutines that tasks may map into
 their memory or not. The library is below the I/O area, at $e800. Directly
@@ -350,7 +348,7 @@ file or even piped to other programs.
 
 ### The Monitor 'mon'
 
-['mon'](mon.md) is a full featured 6502 assembly and machine language
+[mon](mon.md) is a full featured 6502 assembly and machine language
 monitor. Among the usual standard commands other features like, for example,
 relocating 6502 in a certain area or searching for opcodes with specified
 addressing modes is possible.
@@ -516,7 +514,7 @@ variables used to communicate with the kernel nearly everywhere. So these
 variables have to be protected by semaphores. Another thing is that a binary
 can normally only be invoced once. All variables would otherwise be the same
 for all invocations and running different tasks on them would normally give a
-real mess. More on this issue can be found in [nommu.html](nommu.md).
+real mess. More on this issue can be found in the [nommu](nommu.md) docs.
 
 ### C64-Port
 

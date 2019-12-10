@@ -1,8 +1,6 @@
 #  6502 binary relocation format
-
-##  V1.2 as of 26jan1998
-
-###  (c) Andr Fachat (a.fachat@physik.tu-chemnitz.de)
+#### V1.2 as of 26jan1998
+#### (c) Andr Fachat (a.fachat@physik.tu-chemnitz.de)
 
 * * *
 
@@ -55,7 +53,7 @@ segment number.
 
 ###  2) binary format
 
-####  2.1) General
+#####  2.1) General
 
 The file differs from the known Commodore file formats, in that a lot more
 information is stored in the file. First the data is structured in separate
@@ -66,7 +64,7 @@ Also tables are included to allow late binding, i.e. linking the file with
 other files at load time, and relocation, i.e. executing the file at different
 addresses in 6502 address space.
 
-####  2.2) Segments
+#####  2.2) Segments
 
 As already used in other formats, the assembler uses three different segment
 types, i.e. text (the actual program code), data (initialized variables), and
@@ -79,8 +77,8 @@ modifying code in this segment, but allows memory sharing in virtual memory
 architectures. The data segment actually is like the text segment, only it is
 allocated writable. This segment might not be shared between different
 processes. The contents of these two segments are loaded from the file. The
-bss segment is uninitialized data, i.e. upon program start, it is not defined
-- and not loaded from the file. This area is read-write and can be used during
+bss segment is uninitialized data, i.e. upon program start, it is not defined -
+and not loaded from the file. This area is read-write and can be used during
 program execution. It is also not shared between processes. In addition to
 these segments, the 6502 format also includes a zeropage segment type, to
 allow zeropage variables to be relocated. This zeropage segment is like a bss
@@ -92,32 +90,27 @@ in memory (except zero segment, which has to be in the zeropage resp. bank
 zero). The program must therefore not assume anything about the relative
 addresses between different segments.
 
-####  2.3) Relocation
+#####  2.3) Relocation
 
 In general, there are three ways to handle the relocation problem so far:
 
-    
-    
-    - Tables: have a relocation table for a text segment
-      if the relocation table is put in front of code
-      you have to save the table in a side-storage
-      if table is behind, you still cannot relocate 'on the fly'.
-    
-    - Deassembling: go through the code, deassemble it and change all absolute
-      addresses. Problem: needs to know or have hints about where some
-      data is in the code.
-    
-    - Relocation info in the code: here each address is preceeded with an
-      'escape' code and is relocated when loading. But this disallows block
-      oriented transfer from storage media to memory.
-    
+  - Tables: have a relocation table for a text segment
+    if the relocation table is put in front of code
+    you have to save the table in a side-storage
+    if table is behind, you still cannot relocate 'on the fly'.
+  - Deassembling: go through the code, deassemble it and change all absolute
+    addresses. Problem: needs to know or have hints about where some
+    data is in the code.
+  - Relocation info in the code: here each address is preceeded with an
+    'escape' code and is relocated when loading. But this disallows block
+    oriented transfer from storage media to memory.
 
 This binary format uses the first method, with the table after the code/data.
 This way block oriented transfer for the text/data segment can be used. And
 while reading the relocation tables bytewise, the relocation can be done
 without the need to save the table somewhere.
 
-####  2.4) External References & Exported Globals
+#####  2.4) External References & Exported Globals
 
 As this file format should not only be used as an executable format, but also
 as object file format, it must provide a way to define references \-
@@ -131,87 +124,69 @@ Even an executable file can have non-empty globals and externals lists, but
 only if the operating system allows this. In this case, so called 'late
 binding' is used to link the object with some global libraries at link time.
 
-####  2.5) File extension
+#####  2.5) File extension
 
 The proposed standard extension for the described format is ".o65" when used
 as an object file.
 
-####  2.6) Format description
+#####  2.6) Format description
 
 The binary format is the following:
 
-    
-    
-       (
-    	header
-    
-    	text segment
-    
-    	data segment
-    
-    	external references list
-    
-    	relocation table for text segment
-    
-    	relocation table for data segment
-    
-    	exported globals list
-       )
-    
+	(
+	  header
+	  text segment
+	  data segment
+	  external references list
+	  relocation table for text segment
+	  relocation table for data segment
+	  exported globals list
+	)
 
-The description of the parts follows:
+The description of the parts follows in the next.
 
 #####  2.6.1) Header
 
 The header contains the minimum needed data in a fixed struct. The rest of the
-necessary information is put into the header options. [Note: .word is a 16 bit
-value, low byte first, .byt is a simple byte. .long is a 32 bit value, low
-byte first. .size is a 16 or 32 bit value according to .word and .long,
+necessary information is put into the header options. [Note: .word |  is a 16 bit
+value, low byte first, .byt |  is a simple byte. .long is a 32 bit value, low
+byte first. .size |  is a 16 or 32 bit value according to .word |  and .long,
 depending on the size bit in the mode field ]
 
 This is the fixed struct:
 
-    
-    
-       (
-    	.byt $01,$00		; non-C64 marker
-    
-    	.asc "o65"		; o65 MAGIC!
-    	.byt 0			; version
-    
-    	.word mode		; mode word
-    
-    	.size tbase		; address to which text is assembled to 
-    				; originally
-    	.size tlen		; length of text segment
-    	.size dbase		; originating address for data segment
-    	.size dlen		; length of data segment
-    	.size bbase		; originating address for bss segment
-    	.size blen		; length of bss segment
-    	.size zbase		; originating address for zero segment
-    	.size zlen		; length of zero segment
-    	.size stack		; minimum needed stack size, 0= not known.
-    				; the OS should add reasonable values for
-    				; interrupt handling before allocating
-    				; stack space
-       )
-    
+    Size  | Data/Name  | Description
+    ------|------------|--------------------------------------
+    .byt  |  $01, $00  | non-C64 marker
+    .asc  |  "o65"     | o65 MAGIC!
+    .byt  |  0         | version
+    .word |  mode      | mode word
+    .size |  tbase     | address to which text is assembled to originally
+    .size |  tlen      | length of text segment
+    .size |  dbase     | originating address for data segment
+    .size |  dlen      | length of data segment
+    .size |  bbase     | originating address for bss segment
+    .size |  blen      | length of bss segment
+    .size |  zbase     | originating address for zero segment
+    .size |  zlen      | length of zero segment
+    .size |  stack     | minimum needed stack size, 0= not known. the OS should add reasonable values for interrupt handling before allocating stack space
 
 The mode word currently has these defined bits:
 
-    
-    
-    	mode.15 :	CPU	0= 6502 	1= 65816 
-    	mode.14	:	reloc	0= bytewise... 	1= page(256byte)wise relocation
-    						   allowed
-    	mode.13	:	size	0= size=16 bit,	1= size=32 bit
-    	mode.12 :	obj	0= executable	1= object file
-    
-    	mode.0-1:	align	0= byte align,	
-    				1= word (i.e. 2 byte) align
-    				2= long (4 byte) align
-    				3= block (256 byte) align
-    
+    Bit | Function | Values
+    ----|----------|------------------------------------------
+    15  | CPU      | 0= 6502, 1= 65816
+    - - | - - - - -| - - - - - - - - - - - - - - - - - - - - -
+    14  | reloc    | 0= bytewise, 1= pagewise (256 bytes)
+    - - | - - - - -| - - - - - - - - - - - - - - - - - - - - -
+    13  | size     | 0= size=16 bit, 1= size=32 bit
+    - - | - - - - -| - - - - - - - - - - - - - - - - - - - - -
+    12  | obj      | 0= executable, 1= object file
+    - - | - - - - -| - - - - - - - - - - - - - - - - - - - - -
+    1   | align    | 0= byte align,
+    0   |          | 1= word (i.e. 2 byte) align
+        |          | 2= long (4 byte) align
+        |          | 3= block (256 byte) align
 
 The CPU bit tells the loader for which CPU the file was made. This has
 implications on the zero segment, for example. Also a system can check if the
@@ -242,56 +217,49 @@ Each header option consists of a single byte total length, a type byte and
 some data bytes if needed. A single length byte of $00 ends the header option
 list.
 
-    
-    
-       (
-      	{			; optional options, more than one allowed
-    	   .byt olen		; overall length (including length and type
-    				; byte
-    	   .byt otype		; option type
-    	   [ .byt option_bytes ]
-    	}
-    	.byt $00		; end of options marker (i.e. option len=0)
-       )
-    
+    Size       | Data/Name        | Description
+    -----------|------------------|--------------------------------------
+       .byt    | olen             | total option struct length
+       .byt    | otype            | option type
+       .byt[?] | option bytes     | array of optional data bytes
+	           |                  | the length of this array is variable
+       .byt    | $00              | option struct NULL terminator
 
 The header options currently defined/proposed are:
 
-    
-    
-    - Filename:
-      type=0; len=strlen(filename_in_ascii)+3; content="filename_in_ascii",0
-      The string contains the name of the object.
-    
-    - Operating System Header
-      type=1; len=?
-      the first data byte is the OS type:
-        	1 	OSA/65 header supplement
-    	2	Lunix header supplement
-    	[others to follow?]
-      the following data contains OS specific information.
-      A suggested data byte is the OS version as second byte.
-    
+	- Filename:
+	    type = 0
+	    len = strlen(filename_in_ascii)+3
+        content = "filename_in_ascii"
+	      The string contains the name of the object.
+    - Operating System Header:
+	    type = 1
+	    len = ?
+	      the first data byte is the OS type:
+	        1     OSA/65 header supplement
+	        2     Lunix header supplement
+          [others to follow?]
+          the following data contains OS specific information.
+          A suggested data byte is the OS version as second byte.
     - Assemblerprogram:
-      type=2; len=strlen(ass)+3; content="ass",0
-      The string contains the name of the assembler resp. linker that produced 
-      this file/object.
-      For example (syntax see below)
-         .fopt 2, "xa 2.1.1g",0
-      becomes
-         0c 02 78 61 20 32 2e 31 2e 31 67 00
-      in the file.
-    
+	    type = 2
+	    len = strlen(ass)+3
+	    content = "ass"
+          The string contains the name of the assembler resp. linker that produced
+          this file/object.
+          For example, `.fopt 2, "xa 2.1.1g",0` becomes `0c 02 78 61 20 32 2e 31 2e 31 67 00`
     - Author:
-      type=3; len=strlen(author)+3; content="author",0
-      The string contains the author of the file. 
-    
+	    type = 3
+	    len = strlen(author)+3
+	    content = "author"
+          The string contains the author of the file.
     - Creation data:
-      type=4; len=strlen(date)+3; content="date_string",0
-      The string contains the creation date in format like:
-      "Sat Dec 21 14:00:23 MET 1996", where we have the day, Month, date,
-      time, timezone and year. See output of `date`...
-    
+	    type = 4
+	    len = strlen(date)+3
+	    content = "date_string"
+          The string contains the creation date in format like:
+          `Sat Dec 21 14:00:23 MET 1996`, where we have the day, Month, date, time, timezone and year.
+          See output of `date`
 
 #####  2.6.2) text and data segments
 
@@ -304,15 +272,13 @@ the data segment.
 
 The next list is an ASCII list of labels that are referenced in this file but
 not defined. The lists is preceeded with the number of undefined labels (16 or
-32 bits, according to the mode.size bit).
+32 bits, according to the mode.size |  bit).
 
-    
-    
-    undef_list:	number_of_undefined_labels.s
-    		"undefined_label1",0
-    		"undefined_label2",0
-    		...
-    
+    Size       | Description
+    -----------|--------------------------------
+    .byt       | number of undefined labels
+    .string[?] | list of NULL terminated strings
+	           | containing the undefined labels
 
 #####  2.6.4) Relocation tables
 
@@ -329,33 +295,30 @@ address is the first byte of each entry. If the offset is larger than 254
 (i.e. 255 or above), than a 255 is set as offset byte, the offset is
 decremented by 254 (note the difference) and the entry is started again.
 
-    
-    
-    { [255,...,255,] offset of next relocation (b), typebyte|segmentID [, low_byte] }+
-    
+    {
+	  [255,...,255,] offset of next relocation (b), typebyte|segmentID [, low_byte]
+	}+
 
-where typebyte has the bits 5, 6 and 7 and is one of
+where bits 5, 6, and 7 in typebyte is set to:
 
-    
-    
-    WORD	$80	2 byte address
-    HIGH	$40	high byte of an address
-    LOW	$20	low byte of an address
-    SEGADR	$c0	3 byte address (65816)
-    SEG	$a0	segment byte of 3 byte address
-    
+	Data | Type     | Description
+    -----|----------|-------------------------------
+    $80  | WORD     | 2 byte address
+    $40  | HIGH     | high byte of an address
+    $20  | LOW      | low byte of an address
+    $c0  | SEGADR   | 3 byte address (65816)
+    $a0  | SEG      | segment byte of 3 byte address
 
 The segmentID stands for the segment the reference points to:
 
-    
-    
-    0		undefined
-    1		absolute value
-    2		text segment
-    3		data segment
-    4		bss segment
-    5		zero segment
-    
+	Value | Segment Type
+    ------|-----------------------------
+    0     | undefined
+    1     | absolute value
+    2     | text segment
+    3     | data segment
+    4     | bss segment
+    5     | zero segment
 
 (Of course the absolute value will never appear in a relocation table, but
 this value is necessary for the exported list)
@@ -391,16 +354,15 @@ value (i.e. zero segment base address) when running this program.
 
 Example:
 
-Segment Base address in file (header.tbase) is $1000. The start address of the
-text segment after relocation is real.tbase = $1234.
+	Segment Base address in file (header.tbase) is $1000.
+	The start address of the text segment after relocation is real.tbase = $1234.
 
 Now the first (unrelocated) address at which a relocation should take place is
 here:
 
-    
-    
-    $1222	A9 23 		lda #>vector
-    
+	Address | Data bytes | Disassembly
+	--------|------------|---------------
+    $1222   | $A9, $23   | lda #>vector
 
 This generates the offset: $1222-($1000-1) = $223. This is larger than 254
 ($fe), so the first byte is 255 ($ff). The offset is decremented by $fe, and
@@ -419,10 +381,7 @@ referencing a low byte or address.
 
 The relocation table entry is now:
 
-    
-    
     $ff, $ff, $28, $42, $d0.
-    
 
 When actually doing the relocation, the relocation pointer is initialized to
 real.tbase-1 = $1233. Then we compute the offset to $224, which brings us to
@@ -431,21 +390,15 @@ $1234. We now have to compute the new address, where vector is after
 relocation. So we take the unrelocated low byte from the relocation table
 ($d0) and the high byte from $1457 ($23).
 
-    
-    
     vector_file = ($23 << 8) + $c0
-    
 
 To this value we add the difference between the address the program is
 assembled to and the real load address:
 
-    
-    
     vector_relocated = vector_file + (real.tbase - header.tbase)
-    		 = $23d0 + ($1234 - $1000)
-    		 = $23d0 + $234
-    		 = $2604
-    
+    vector_relocated = $23d0 + ($1234 - $1000)
+    vector_relocated = $23d0 + $234
+    vector_relocated = $2604
 
 From this value the high byte is then written back to the address $1457. Had
 we not saved the low byte in the relocation table, and only added the high
@@ -454,12 +407,9 @@ this case!
 
 Had "vector" now been an undefined reference, and "vector" would be the second
 label in the undefined references list, we would get the following relocation
-table entry (assuming mode.size=0):
+table entry (assuming mode.size | =0):
 
-    
-    
     $ff, $ff, $28, $40, $00, $02, $00
-    
 
 The value computed with the above formula for vector_file is now added to the
 address the label "vector" now really has (This must of course be looked up
@@ -478,12 +428,15 @@ needed. The number of labels and the offset value are 16 bit or 32 bit values
 according to the size bit in the header mode field. The segmentID is a byte
 value and the same as in the relocation table entry (see section 2.6.3).
 
-    
-    
-    	number_of_exported_labels.s
-            "global_label_name_in_asc1",0, segmentID.b, value.s
-    	...
-    
+
+    Size           | Description
+    ---------------|-----------------------------------------------
+    .s             | number of exported labels
+	struct[?] {    | Array of structs
+	  .string      | Name of global label in ASCII, NULL terminated
+	  .byt         | Segment ID
+	  .s           | Value
+	}              |
 
 ###  3) assembler source format
 
@@ -499,48 +452,42 @@ the text segment start address to where the code will be in the ROM. Of
 course, the other segments must be taken care of with -b? command line
 parameter, that set the segment start address.
 
-####  3.1) embed absolute code in relocatable files
+#####  3.1) embed absolute code in relocatable files
 
 When the assembler is started in relocatable mode, everything is put into a
 .o65 relocatable file. All address references generate relocation table
-entries. If a "*= value" pseudo opcode is encountered, then the assembler
+entries. If a `*= value` pseudo opcode is encountered, then the assembler
 switches to absolute mode. The following opcodes don't generate relocation
-table entries. If a "*=" without a value is read, then the assembler switches
+table entries. If a `*=` without a value is read, then the assembler switches
 back to relocatable mode. The relocation program counter is increased with the
 length of the absolute part and the absolute code is embedded between the
 relocatable parts.
 
-####  3.2) embed relocatable code in absolute files
+#####  3.2) embed relocatable code in absolute files
 
 This is dropped - too complicated. Should better be done with some objdump or
 linker programs or so.
 
-####  3.2) Header options
+#####  3.2) Header options
 
 Before any opcode (after starting in relocatable mode, or after a .reloc
 opcode), a header option can be set by:
 
-    
-    
     	.fopt byte1, byte2, ...
-    
 
 The header option length is automatically set by the assembler. An example for
 an file author entry:
 
-    
-    
     	.fopt 3, "Andre Fachat",0
-    
 
 The 3 is the type byte for the author header option. The last zero ends the
 name. The assembler can be configured to automatically include an assembler
 header option into a file header.
 
-####  3.3) allocation of data segment/zeropage segment address space
+#####  3.3) allocation of data segment/zeropage segment address space
 
-The assembler switches between the different segments by the means of ".text",
-".data", ".bss" and ".zero" pseudo opcodes. After starting in relocatable
+The assembler switches between the different segments by the means of `.text`,
+`.data`, `.bss` and `.zero` pseudo opcodes. After starting in relocatable
 mode, the assembler is in the text segment.
 
 The text segment contains the program code. Data holds the initialized data,
@@ -553,38 +500,35 @@ for the bss and zero segments only the length is saved in the file.
 The assembler should issue a warning when a direct addressing mode is used
 without a zero segment address and vice versa for 65816 CPUs.
 
-####  3.4) referencing data/bss/zeropage addresses
+#####  3.4) referencing data/bss/zeropage addresses
 
 One problem with the 6502 is, that it cannot load an address within one step
 or assembler opcode. So an address is loaded with standard byte opcodes, like
-"lda # The assembler is now intelligent enough to evaluate such expressions
+`lda #`. The assembler is now intelligent enough to evaluate such expressions
 and check for:
 
-    
-    
-    - no address label			: ok, absolute
-    - one address label, only add to label	: ok, relocate
-    - difference between two addresses 	: If addresses in same segment, compute
-    					  diff and set absolute, otherwise bail
-    - everything else			: warning
-    
+  - no address label
+    - ok, absolute
+  - one address label, only add to label
+    - ok, relocate
+  - difference between two addresses
+    - If addresses in same segment, compute diff and set absolute, otherwise bail
+  - everything else
+    - warning
 
 This way there is no change in syntax. Address labels are distinguished by
 using the "label:" syntax, as opposed to "label = value". Also, if the
 assembler is capable of doing so, an address label may be defined by "label
 opcode", i.e. without a colon.
 
-####  3.5) aligning code
+#####  3.5) aligning code
 
 The 6502 has the problem that some opcodes (e.g. "JMP ($xxFF)" are broken, if
 the address given is at some (odd) address. But when loading a relocatable
 file, one cannot know if an address will be odd or even. Therefore there is a
 new opcode,
 
-    
-    
-    	.align 2
-    
+    .align 2
 
 that aligns the next address at the given address boundary. Valid values are
 2, 4, and 256.
@@ -597,13 +541,12 @@ option "assigned numbers" should be added here.
 For this reason the author, Andr Fachat, will function as a clearing point,
 where problems can be discussed and number can be assigned.
 
-Dec. 22, 1996,  
-Andre Fachat  
-(fachat@physik.tu-chemnitz.de)  
+Dec. 22, 1996,
+Andre Fachat
+(fachat@physik.tu-chemnitz.de)
 
 ##  Appendix
 
 ###  A) File examples
 
 (to be done with reference assembler)
-

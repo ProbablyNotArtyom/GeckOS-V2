@@ -21,8 +21,8 @@ the two modes.
 
  Mode             |  Description
 ------------------|-----------------
-**indirect mode** |  keyboard events are printed on the screen only, not sent to the stream. If a Return occurs, the actual line is sent to the stream. This is default.
-**direct mode**   |  all keyboard events are directly passed to the stream. Supported terminal control codes are Bell, Backspace, Carriage Return, Line Feed and Form Feed.
+  indirect mode   |  keyboard events are printed on the screen only, not sent to the stream. If a Return occurs, the actual line is sent to the stream. This is default.
+  direct mode     |  all keyboard events are directly passed to the stream. Supported terminal control codes are Bell, Backspace, Carriage Return, Line Feed and Form Feed.
 
 #### par Device
 

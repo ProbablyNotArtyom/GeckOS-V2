@@ -1,12 +1,10 @@
 #  OS/A65 Kernel Interface Description
-
-##  (c) 1989-98 Andre Fachat
+#### OS/A65 Version 2.0
+#### (c) 1989-98 Andre Fachat
 
 * * *
 
-### OS/A65 Version 2.0
-
-#### Introduction
+### Introduction
 
 The change from kernel 1.3 to kernel 2.0 is radical in some things, but
 conservative in others. The complete environment handling has been rewritten
@@ -34,7 +32,7 @@ implementations". These comments mostly refer to the embedded versions of the
 OS where the kernel can be shortened to (almost) 2k in size by leaving out
 some stuff not necessary for the particular application.
 
-#### Contents
+### Contents
 
   * Kernal Interface Description
   * Error Codes
@@ -44,7 +42,7 @@ some stuff not necessary for the particular application.
   * Porting Information
   * System Constants
 
-#### Kernel Interface Description
+### Kernel Interface Description
 
 Most kernel routines return an error code in the accumlator (a), if the carry
 flag is reset upon return. Otherwise the ac might contain data.
@@ -57,22 +55,14 @@ kernel addresses that are stored as offset to this base as appropriate.
 
 * * *
 
-
-
     $f000  	RESET   System reset
 
-
-
 * * *
-
-
 
     $f003	ENMEM	Enable 4k memory block, no in xr, for memory management -
     		MMU version only
     $f006	SETBLK	set memory block ac at MMU entry yr - returns old entry
     		in ac. MMU version only
-
-
 
 * * *
 
@@ -82,9 +72,6 @@ push/pull signals as "out-of-band" data.
 
 In the [embedded](embedded.md) versions the stream functions are not
 necessarily implemented.
-
-
-
 
     $f009	GETSTR	Get a free stream. increase read and write task counter,
     		returns stream number in x
@@ -155,7 +142,6 @@ necessarily implemented.
     		SCE_WERRM	%00000011  writer error condition mask
 
 
-
 The error condition byte can be set and read from both ends. This byte is
 cleared when the stream is allocated. If the reader "pulls" data, this is a
 sign for the writer to flush all its internal buffers into the stream. When
@@ -180,8 +166,6 @@ If the writer wants to send a `Break` (i.e. a `^C` equivalent) code to the
 reader, it sets the `SCE_BRK` bit. The reader must clear it itself.
 
 * * *
-
-
 
     $f01b	DEVCMD	executes device commands. parameter: device number in x,
     		device command in a, optional parameter in y.
@@ -218,14 +202,9 @@ reader, it sets the `SCE_BRK` bit. The reader must clear it itself.
     		DC_REGDEV	18	register new device(s)
 
 
-
 With the registration of the device the system has to know what to do with it
 and where to put it in memory. Therefore you have to put the address of the
 following struct into x/y registers.
-
-
-
-
 
     		x/y ->          2 byte pointer to label1
     				JMP Start_of_1st_device
@@ -238,15 +217,12 @@ following struct into x/y registers.
     		labeln		$ffff
 
 
-
 With this method it is possible to register several devices, as long as they
 are in one memory block, with one call. The devices are started with DC_RESET.
 In y they get a system feature byte. Currently only bit 7 is defined, where
 $00 is 1 MHz system clock and $80 is 2 MHz system clock.
 
 * * *
-
-
 
     $f01e	FORK	start a new task. parameter: yr = length of the following
     		struct in PCBUF
@@ -300,9 +276,6 @@ startup, i.e. a nullbyte separated list of program name and parameter, with a
 zero-length parameter at the end.
 
 The newly created task must release the SEM_SENDBUF semaphore for the PCBUF.
-
-
-
 
     $f021	TERM	<- a = return code
     		ends the current thread. If still threads in the tasks are
@@ -376,14 +349,9 @@ The newly created task must release the SEM_SENDBUF semaphore for the PCBUF.
     		(carry=0): get redirected STD* stream number. parameter:
     		STD* number in x, returns stream in a
 
-
-
 * * *
 
 The semaphore calls need not be available in all OS implementations.
-
-
-
 
     $f036	GETSEM	gets a free semaphore. returns semaphore number in x
 
@@ -401,11 +369,7 @@ The semaphore calls need not be available in all OS implementations.
     		to grab the semaphore.
     		parameter: semaphore number in x
 
-
-
 * * *
-
-
 
     $f042	SEND	send a message to another task
     		parameter: optional message type in a, target task in x,
@@ -422,11 +386,7 @@ The semaphore calls need not be available in all OS implementations.
     		data in PCBUF in y (0 means 256) and the optional message
     		type as given with SEND in a.
 
-
-
 * * *
-
-
 
     $f048	SETSIG	sets the signal address and the signal mask
     		(carry=1): sets signal address in a/y
@@ -439,18 +399,14 @@ The semaphore calls need not be available in all OS implementations.
     		c=0: set thread to sleep until it receives a signal
 
 
-
 Signal handling works as follows: With SETSIG the signal address and the
 signal mask can be set. There is only one signal address, that is the address
 of a subroutine that is called on a signal. When the routine is called, it has
 the current pending signal mask in AC. The routine must return with a code
 sniplet
 
-
-
     	pla
     	rti
-
 
 which jumps directly to the code executed before the signal occured. Note that
 the x and y register must not be changed or must be preserved during the
@@ -474,8 +430,6 @@ If the INT bit is not set, then the signal is pending, and the signal routine
 is called when a thread of the task is set to running again.
 
 Signal mask values are
-
-
 
     	SIG_INT		%10000000	/* allow interruptable kernel calls */
     	SIG_CHLD	%01000000	/* Child process has terminated */
@@ -506,8 +460,6 @@ then the thread is awakened and returns with `E_INT`. The other registers are
 not preserved.
 
 * * *
-
-
 
     $f04e	TDUP	register a task for a (negative) system task number.
     		parameter: (negative) task number to replace in x,
@@ -557,11 +509,7 @@ not preserved.
     		This routine is called when initiating and ending an
     		IEC serial bus transfer, for example.
 
-
-
 * * *
-
-
 
     $f05a	GETPID	returns the current task ID in x and the current thread ID
     		in y
@@ -586,16 +534,13 @@ not preserved.
     		child died.
     		c=1: no child that has died found.
 
-
 * * *
 
-#### Error Codes
+### Error Codes
 
 On bootup the system is tested and possible errors are detected. On systems
 with a system port, the hardware error is shown by the number of flashes the
 LED makes before the system reboots
-
-
 
     /*        Hardware-Errors          */
 
@@ -605,13 +550,8 @@ LED makes before the system reboots
     #define   HE_DEV    <-4	/* device returns error upon init */
     #define   HE_TASK   <-5	/* all programs have terminated - reboot */
 
-
-
 possible error codes are (from oadef/oa1str.def, where most things, except
 filesystem stuff are defined) (These codes must be reordered):
-
-
-
 
     /*        Software-Errors          */
 
@@ -680,11 +620,9 @@ filesystem stuff are defined) (These codes must be reordered):
 
     #define   E_LASTERR     <-96    /* for customized error numbers         */
 
-
-
 * * *
 
-#### ROM bootup
+### ROM bootup
 
 During bootup, the kernel initializes the memory and sets up the standard
 system memory configuration. This includes mapping the system ROM from the top
@@ -698,8 +636,6 @@ the beginning is taken as a pointer to the next file and so forth, until the
 kernel finds a `$ffff`.
 
 The program ROM structure looks like:
-
-
 
     	P_KIND		0	/* byte, type of file			*/
     	P_ADDR		1	/* word, start address of execution	*/
@@ -726,8 +662,6 @@ The program ROM structure looks like:
 
 There are several program types available:
 
-
-
     	PK_PRG		0	/* simple program 			*/
     	PK_DEV		1	/* device block				*/
     	PK_FS		2	/* filesystem				*/
@@ -736,7 +670,6 @@ There are several program types available:
 
 These file types have to be filled into the `P_KIND` field above. In addition
 they can be or'd by the following flags.
-
 
 
     	PK_AUTOEXEC	$80	/* autoexecution 			*/
@@ -767,7 +700,7 @@ If the init process is configured for it, and the `PK_RESTART` bit is set, it
 registers the task id of the started process and restarts it when the task
 dies.
 
-#### Variable allocation
+### Variable allocation
 
 ROM tasks are started from the `init` task and have no way to determine which
 RAM locations are used by other tasks. Therefore the variable allocation must
@@ -789,7 +722,7 @@ can be used for thread data.
 
 * * *
 
-#### Configuration when building
+### Configuration when building
 
 The kernel is configurable in a wide range. Many options are available for all
 versions, but also many options are architecture dependent. The options are
@@ -797,8 +730,6 @@ generally set in a global file that builds a system ROM. Therefore, to not set
 the options in the kernel file itself, the macro `ROM` must be defined.
 
 General options:
-
-
 
     	CMOSCPU		/* have (rockwell) R65C02		*/
     	NMIDEV		/* allows handling of NMI in devices
@@ -809,10 +740,7 @@ General options:
     			   either been split up or, with this
     			   options, copied to a save area	*/
 
-
 Memory options:
-
-
 
     	RAMSIZE		/* size of checked RAM during bootup,
     			   in 256-byte blocks			*/
@@ -829,19 +757,14 @@ Memory options:
 
 Some Architecture specific options:
 
-
-
     	NOSYSPORT	/* The CS/A65 computer has a certain 	*/
     			   port where it can read the IRQ line
     			   for example. Not available if set	*/
     	ROMTEST		/* on CS/A65 systems allow booting from
     			   a running OS/A65 (replacing it)	*/
 
-
 Kernel configuration options for various system calls are the following. The
 second half is mostly used to customize for embedded applications.
-
-
 
     	NEED_CHECKCHLD	/* checkchld available if set 		*/
     	NEED_GETINFO	/* getinfo available if set		*/
@@ -859,10 +782,9 @@ second half is mostly used to customize for embedded applications.
     			/* it. kinit _must_ copy the stuff from	*/
     			/* eok_addr to $fff*			*/
 
-
 * * *
 
-#### Porting
+### Porting
 
 Porting has been made much easier with this kernel version. In general, there
 is a `proto` architecture subdirectory that holds some prototype files for a
@@ -874,7 +796,7 @@ startup code, i.e. after setting the interrupt flag and clearing the decimal
 flag this file is executed, and it is expected that the CPU gets out of this
 file at the end of it.
 
-##### kinit.a65
+#### kinit.a65
 
 This file must initialize the stack, the memory management and mapping of the
 system ROM and RAM. Then the system preemption timer must be set up. When
@@ -885,8 +807,6 @@ the init routine in this file.
 
 In addition to this some Macros have to be defined, that are used in the
 kernel later.
-
-
 
       	GETFREQ()	returns a=0 for 1Mhz, a=128 for 2MHz
       	LEDPORT		address of LED port to signal hardware failures
@@ -907,13 +827,11 @@ For the most systems without MMU, most of these macros can be taken from the
 C64 `kinit.a65` file. If you have a more complicated mapping, you can have a
 look at the CS/A65 `kinit.a65` file.
 
-##### kenv.a65
+#### kenv.a65
 
 The `kenv.a65` file is included in another part of the kernel. It is the part
 that maps the memory according to the environment number for each task.
 Several routines must be defined here:
-
-
 
     	inienv		init environment handling
     	setthread	set active thread
@@ -935,8 +853,6 @@ Several routines must be defined here:
 
 
 Also some macros must be defined:
-
-
 
     	MEMTASK2()	This is equivalent to memtask above, but it
     			is used for returns from interrupt
@@ -961,13 +877,11 @@ more complicated system, have a look at the CS/A65 file.
 
 * * *
 
-#### System Constants
+### System Constants
 
 Terminal devices should understand the following terminal control codes (But
 the currently implemented device driver doesn't understand them all,
 though...)
-
-
 
     /*        Terminal Commands        */
 
@@ -1001,23 +915,16 @@ though...)
                                     cursor position
 
 
-
 FORK, SETIRQ and TRESET can **NO MORE** be called via a SEND system call, when
 the receiver address is SEND_SYS and the message type is SP_* !!
-
-
 
     /*        SysProcCalls             */
 
     #define   PCBUF     $200
 
 
-
 STD* stream number are replaced by the numbers saved in the environment
 struct.
-
-
-
 
     /*        StdStream                */
 
@@ -1026,17 +933,9 @@ struct.
     #define   STDOUT         $fe
     #define   STDERR         $ff
 
-
-
 Reserved system environment numbers:
 
-
-
-
     #define   SEND_FM        $fe		/* filesystem manager */
-
     #define	  SEND_ERROR	 $fd		/* critical error handler */
-
     #define   SEND_TIME      $fc		/* set/get actual time */
-
     #define   SEND_NET       $fb            /* open network connections */

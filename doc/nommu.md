@@ -1,11 +1,10 @@
 #  OS/A65 Operation without MMU
-
-##  (c) 1989-98 Andre Fachat
+####  (c) 1989-98 Andre Fachat
 
 * * *
 
 Using OS/A65 without an MMU used to require some special measures. One of it
-was to coordinate all running tasks concerning their memory usage.  
+was to coordinate all running tasks concerning their memory usage.
 With the new relocatabel o65 fileformat the lib6502 implemetation takes care
 of that.
 
@@ -27,14 +26,12 @@ slower, but allows much more stack space in a task and much more tasks.
 There is one other thing that cannot easily be coordinated - the SEND buffer.
 This buffer is used for communication with the kernel. As OS/A65 originated
 from a system with MMU, there was no real need not to use an absolute address
-for the buffer, thus saving registers for other purposes.  
+for the buffer, thus saving registers for other purposes.
 For all systems now the usage of the SEND buffer has to be coordinated between
 the tasks. Therefore a system semaphore is used.
 
-    
-    
     #define	SEM_SENDBUF	&lt-1;
-    
+
 
 Before accessing the SEND buffer at $02**, the task has to allocate it with a
 PSEM operation on the SEM_SENDBUF semaphore. After the system call, it has to
@@ -46,7 +43,7 @@ sent is not fixed and therefore predictable, precautions against a lock have
 to be taken: task 1 allocating the send buffer to send a message to task 2.
 The same time task 2 tries to allocate the send buffer to send a message to
 task 1. If it not tries to receive messages while waiting for the semaphore,
-it will lock.  
+it will lock.
 Therefore the filesystems, for example, do not release the send buffer while
 executing a command or open a file. In the meantime another task could send a
 message to the filesystem, locking the send buffer. But the buffer is needed
@@ -54,13 +51,12 @@ by the filesystem to send the reply message. The filesystems in their current
 form are not prepared for this situation, so that they don't release the send
 buffer.
 
-Be careful when using the send buffer - you are warned!
+**Be careful when using the send buffer - you are warned!**
 
 The lib6502 library is thread-save. It can be used by any thread at any time.
 Internal locks (semaphores) are used to avoid any interference if necessary.
 
 * * *
 
-Suggested reading: "Operating Systems, design and implementation", Andrew S.
+**Suggested reading**: "Operating Systems, design and implementation", Andrew S.
 Tanenbaum, Prentice-Hall
-

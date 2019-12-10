@@ -19,11 +19,11 @@ application can be tested on a full-featured system while the embedded kernel
 provides compatibility where necessary.
 
 Parts of the kernel that can be removed are:
- > streams
- > memory management
- > file manager
- > send/receive
- > semaphores
+  * streams
+  * memory management
+  * file manager
+  * send/receive
+  * semaphores
 
 This shortens the kernel to almost 2k in size. Also the used amount of RAM is
 $bc = 188 byte normal RAM, plus $e = 14 byte zeropage (not counting the
